@@ -32,7 +32,9 @@ class AirportSpec extends Specification {
 
     def "An airport can allow a plane to takeoff"() {
         given: "A plane is in the Airport"
-        airport.land(plane)
+        Plane landedPlane = Stub(Plane)
+        landedPlane.isLanded() >>> [true]
+        airport.land(landedPlane)
 
         when: "That plane can take off"
         airport.takeOff(plane)
@@ -42,6 +44,18 @@ class AirportSpec extends Specification {
 
     def "An airport does not allow a plane to takeoff if it is not at airport" () {
         expect: !airport.takeOff(plane)
+    }
+
+    def "A plane cannot land if it is 'landed'" (){
+       given: "A plane is landed"
+        Plane landedPlane = Stub(Plane)
+        landedPlane.isLanded() >>> [true]
+
+        when: "The airport tries to land it"
+        airport.land(landedPlane)
+
+        then: "The plane is not allowed to land"
+        airport.GetNumberOfPlanes() == 0
     }
 
 }
