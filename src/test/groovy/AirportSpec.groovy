@@ -23,14 +23,25 @@ class AirportSpec extends Specification {
 
     def "An airport cannot receive a plane if at capacity"() {
 
-        given: "An airport with capacity of 1"
-        def airport1 = new Airport(1)
-
         when: "An airport with capacity of 1 has a plane land"
-        airport1.land(plane)
+        airport.land(plane)
 
         then: "A plane cannot land"
-        !airport1.land(plane2)
+        !airport.land(plane2)
+    }
+
+    def "An airport can allow a plane to takeoff"() {
+        given: "A plane is in the Airport"
+        airport.land(plane)
+
+        when: "That plane can take off"
+        airport.takeOff(plane)
+
+        then: airport.GetNumberOfPlanes() == 0
+    }
+
+    def "An airport does not allow a plane to takeoff if it is not at airport" () {
+        expect: !airport.takeOff(plane)
     }
 
 }

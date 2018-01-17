@@ -6,7 +6,7 @@ public class Airport {
     private int capacity;
 
     public Airport() {
-        this(5);
+        this(1);
         planeArrayList = new ArrayList<>();
     }
 
@@ -24,10 +24,20 @@ public class Airport {
     }
 
     public boolean land(Plane plane) {
-        if (GetNumberOfPlanes() == getCapacity()) {
+        if (GetNumberOfPlanes() == getCapacity() || plane.isLanded()){
             return false;
         }
         planeArrayList.add(plane);
+        plane.land();
+        return true;
+    }
+
+    public boolean takeOff(Plane plane) {
+        if(!planeArrayList.contains(plane)|| !plane.isLanded()) {
+            return false;
+        }
+        planeArrayList.remove(plane);
+        plane.takeOff();
         return true;
     }
 }
