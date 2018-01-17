@@ -1,10 +1,18 @@
 import spock.lang.Specification
 
 class AirportSpec extends Specification {
+
+    Airport airport
+    Plane plane
+    Plane plane2
+
+    def setup(){
+        airport = new Airport()
+        plane = Mock(Plane)
+        plane2 = Mock(Plane)
+    }
+
     def "An airport can receive a plane" () {
-        given: "When an instance of an Airport is created"
-        def airport = new Airport()
-        def plane = Mock(Plane)
 
         when: "An airport can receive a plane"
         airport.land(plane)
@@ -14,16 +22,15 @@ class AirportSpec extends Specification {
     }
 
     def "An airport cannot receive a plane if at capacity"() {
-        given: "When an instance of an Airport is created"
-        def airport = new Airport(1)
-        def plane = Mock(Plane)
-        def plane2 = Mock(Plane)
+
+        given: "An airport with capacity of 1"
+        def airport1 = new Airport(1)
 
         when: "An airport with capacity of 1 has a plane land"
-        airport.land(plane)
+        airport1.land(plane)
 
         then: "A plane cannot land"
-        !airport.land(plane2)
+        !airport1.land(plane2)
     }
 
 }

@@ -15,7 +15,7 @@ public class Airport {
         planeArrayList = new ArrayList<>();
     }
 
-    public int getCapacity() {
+    private int getCapacity() {
         return capacity;
     }
 
