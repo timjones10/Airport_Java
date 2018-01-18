@@ -24,7 +24,7 @@ public class Airport {
     }
 
     public boolean land(Plane plane) {
-        if (GetNumberOfPlanes() == getCapacity() || plane.isLanded()){
+        if (capacity() || plane.isLanded()) {
             return false;
         }
         planeArrayList.add(plane);
@@ -33,11 +33,15 @@ public class Airport {
     }
 
     public boolean takeOff(Plane plane) {
-        if(!planeArrayList.contains(plane)|| !plane.isLanded()) {
+        if (!planeArrayList.contains(plane) || !plane.isLanded()) {
             return false;
         }
         planeArrayList.remove(plane);
         plane.takeOff();
         return true;
+    }
+
+    private boolean capacity() {
+        return GetNumberOfPlanes() == getCapacity();
     }
 }
