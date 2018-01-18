@@ -4,15 +4,12 @@ public class Airport {
 
     private ArrayList<Plane> planeArrayList;
     private int capacity;
+    private Weather weather;
 
-    public Airport() {
-        this(1);
-        planeArrayList = new ArrayList<>();
-    }
-
-    public Airport(int capacity) {
+    public Airport(int capacity, Weather weather) {
         this.capacity = capacity;
         planeArrayList = new ArrayList<>();
+        this.weather = weather;
     }
 
     private int getCapacity() {
@@ -24,7 +21,7 @@ public class Airport {
     }
 
     public boolean land(Plane plane) {
-        if (capacity() || plane.isLanded()) {
+        if (capacity() || plane.isLanded() || stormy()) {
             return false;
         }
         planeArrayList.add(plane);
@@ -43,5 +40,9 @@ public class Airport {
 
     private boolean capacity() {
         return GetNumberOfPlanes() == getCapacity();
+    }
+
+    public boolean stormy() {
+        return weather.stormy();
     }
 }

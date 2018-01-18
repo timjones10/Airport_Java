@@ -5,9 +5,12 @@ class AirportSpec extends Specification {
     Airport airport
     Plane plane
     Plane plane2
+    Weather weather
 
     def setup(){
-        airport = new Airport()
+        weather = Stub(Weather)
+        weather.stormy() >>> [false]
+        airport = new Airport(1, weather)
         plane = Mock(Plane)
         plane2 = Mock(Plane)
     }
@@ -47,7 +50,7 @@ class AirportSpec extends Specification {
     }
 
     def "A plane cannot land if it is 'landed'" (){
-       given: "A plane is landed"
+        given: "A plane is landed"
         Plane landedPlane = Stub(Plane)
         landedPlane.isLanded() >>> [true]
 
@@ -58,4 +61,34 @@ class AirportSpec extends Specification {
         airport.GetNumberOfPlanes() == 0
     }
 
+    def "A plane cannot land if the weather is stormy"(){
+        given: "A plane is in the air"
+        Plane airPlane = Stub(Plane)
+        airPlane.isLanded() >>> [false]
+
+        when: "Weather is stormy"
+        Weather weather = Stub(Weather)
+        weather.stormy() >>> [true]
+        airport = new Airport(1, weather)
+
+        then: "The plane cannot land"
+        !airport.land(airPlane)
+
+    }
+
+    def "A plane cannot take off if the weather" () {
+        given: "A plane is on the ground at the airport"
+        Plane landedPlane = Stub(Plane)
+        airport.land(landedPlane)
+        landedPlane.isLanded() >>> [true]
+
+        when: "The weather is stormy"
+        Weather weather = Stub(Weather)
+        weather.stormy() >>> [true]
+        airport = new Airport(1, weather)
+
+        then: "The plane cannot takeoff"
+        !airport.takeOff(landedPlane)
+
+    }
 }
